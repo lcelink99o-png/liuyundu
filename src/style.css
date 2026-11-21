@@ -152,6 +152,10 @@ body.entering #app, body.entering .hud, body.entering .start, body.entering .ent
   pointer-events: none;
   transition: opacity 0.45s ease;
 }
+/* 帷幕拉开瞬间，把 index 页面背景从米白切为深黑，避免跳转前露出刺眼白屏 */
+body.entering {
+  background: #0b0b0b;
+}
 .curtain {
   position: fixed;
   inset: 0;
