@@ -19,7 +19,8 @@ const forcedSize = query.get('res')?.match(/^(\d+)x(\d+)$/)?.slice(1).map(Number
 const soundtrack = createSoundtrack({ url: TRACK.url, start: TRACK.start, length: 40, muted: query.has('mute') })
 
 const canvas = document.querySelector('#app')
-const intro = document.querySelector('.intro')
+// 动画作用根元素：merged.html 用 .intro 容器，index.html 直接作用在 body 上
+const intro = document.querySelector('.intro') || document.body
 const renderer = new THREE.WebGPURenderer({ canvas, antialias: false, trackTimestamp: query.has('perf') })
 await renderer.init()
 canvas.dataset.backend = renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl-fallback'
