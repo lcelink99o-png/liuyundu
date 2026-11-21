@@ -424,12 +424,14 @@ img { display: block; max-width: 100%; }
   padding: clamp(32px, 5vw, 64px) var(--gut);
 }
 .detail-body p {
-  max-width: 74ch;
-  font-size: clamp(17px, 1.55vw, 21px);
+  max-width: none;
+  font-size: clamp(17px, 1.7vw, 22px);
   line-height: 1.9;
   color: #d8d8d4;
   margin-bottom: 20px;
-  text-align: left;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: break-word;
 }
 .detail-body p:last-child { margin-bottom: 0; }
 /* 详情页分组小标题（设定原文：工作性格 / 生活性格 / 主线大事件 / 冷知识 …） */
