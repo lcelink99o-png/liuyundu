@@ -25,6 +25,9 @@ const renderer = new THREE.WebGPURenderer({ canvas, antialias: false, trackTimes
 await renderer.init()
 canvas.dataset.backend = renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl-fallback'
 renderer.toneMapping = THREE.ACESFilmicToneMapping
+// WebGPU 初始化成功后立即解除 loading 锁（避免后续渲染预热卡住导致白屏）
+document.body.classList.remove('is-loading')
+intro.classList.remove('is-loading')
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 200)
