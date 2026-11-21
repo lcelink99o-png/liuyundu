@@ -782,11 +782,19 @@ renderTimeline()
 initTimelineScrollbar()
 
 // 帷幕入场遮罩兜底：无论 CSS 动画是否播放，1.2 秒后强制隐藏幕布，避免白屏
+// 若来自开屏动画跳转（?from=intro），立即隐藏帷幕，避免「拉两次」的重复过渡
 const curtainIn = document.querySelector('.curtain-in')
 if (curtainIn) {
-  setTimeout(() => {
+  const fromIntro = new URLSearchParams(location.search).get('from') === 'intro'
+  if (fromIntro) {
+    // 从开屏动画跳转而来：开屏已播放过帷幕，直接移除 home 的入场帷幕，不重复播放
     curtainIn.style.display = 'none'
-  }, 1200)
+  } else {
+    // 直接访问 home.html：正常播放入场帷幕，1.2 秒后兜底隐藏
+    setTimeout(() => {
+      curtainIn.style.display = 'none'
+    }, 1200)
+  }
 }
 
 // GSAP 动效：恢复标题逐字拆分 + 滚动入场动效

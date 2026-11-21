@@ -259,7 +259,8 @@ document.querySelector('[data-enter]').addEventListener('click', () => {
     // 用相对路径，兼容 GitHub Pages 子路径部署
     document.body.classList.add('entering')
     setTimeout(() => {
-      window.location.href = 'home.html'
+      // 带上来源标记：home.html 检测到 from=intro 时跳过二次帷幕，避免「拉两次」
+      window.location.href = 'home.html?from=intro'
     }, 1150)
   }
 })
