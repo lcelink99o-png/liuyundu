@@ -268,7 +268,7 @@ const CAST = [
   {
     id: 'liuyan',
     name: '流焱',
-    race: '人类 · 浮玉当权者',
+    race: '人类 · 初代浮玉将军',
     img: 'images/cast-liuyan.jpg',
     brief: '白色短发的人类，擅长青焰、可瞬移。领兵统一浮玉，洒脱豪迈，卸甲后云游四海。',
     full: [
