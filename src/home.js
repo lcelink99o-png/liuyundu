@@ -402,34 +402,10 @@ function initTimelineScrollbar() {
 function initHero() {
   const title = document.getElementById('heroTitle')
   if (!title) return
+  // 标题保持静态显示（不依赖 GSAP），避免动效失败导致标题不可见
   const gsap = getGSAP()
-  if (!gsap) return  // GSAP 未加载时跳过动效，保持静态显示
-  const text = title.textContent.trim()
-  title.textContent = ''
-  title.setAttribute('aria-label', text)
-  const chars = [...text]
-  const spans = chars.map((ch) => {
-    const span = document.createElement('span')
-    span.className = 'ch'
-    span.textContent = ch
-    title.appendChild(span)
-    return span
-  })
-  // GSAP 逐字母入场：y 上浮 + 旋转归正 + 淡入，统一节奏
-  gsap.fromTo(
-    spans,
-    { yPercent: 110, opacity: 0, rotate: 4 },
-    {
-      yPercent: 0,
-      opacity: 1,
-      rotate: 0,
-      duration: 0.9,
-      ease: 'power4.out',
-      stagger: 0.055,
-      delay: 0.15,
-    }
-  )
-  // 副标题 + CTA 延迟浮入
+  if (!gsap) return
+  // 仅做副标题 + CTA 的增强动效（失败也不影响标题可见性）
   gsap.fromTo(
     '.hero-sub, .hero-cta',
     { y: 28, opacity: 0 },
@@ -607,6 +583,9 @@ function initScrollAnimations() {
   if (!gsap || !ScrollTrigger) return
   gsap.registerPlugin(ScrollTrigger)
 
+  // 通用兜底：确保所有 ScrollTrigger 元素默认可见，动效失败也不影响显示
+  const safeTrigger = (cfg) => ({ ...cfg, immediateRender: false })
+
   // 1) 各板块标题区（coll-label / coll-sub）：下屏标题接力浮入
   gsap.utils.toArray('.coll-head').forEach((head) => {
     const label = head.querySelector('.coll-label')
@@ -622,11 +601,11 @@ function initScrollAnimations() {
         duration: 1,
         ease: 'power3.out',
         stagger: 0.12,
-        scrollTrigger: {
+        scrollTrigger: safeTrigger({
           trigger: head,
           start: 'top 82%',
           toggleActions: 'play none none reverse',
-        },
+        }),
       }
     )
   })
@@ -642,11 +621,11 @@ function initScrollAnimations() {
         duration: 0.9,
         ease: 'power3.out',
         delay: (i % 3) * 0.08,
-        scrollTrigger: {
+        scrollTrigger: safeTrigger({
           trigger: entry,
           start: 'top 90%',
           toggleActions: 'play none none reverse',
-        },
+        }),
       }
     )
   })
@@ -663,11 +642,11 @@ function initScrollAnimations() {
         delay: i * 0.05,
         overwrite: 'auto',
         clearProps: 'opacity',
-        scrollTrigger: {
+        scrollTrigger: safeTrigger({
           trigger: '.timeline',
           start: 'top 80%',
           once: true,
-        },
+        }),
       }
     )
   })
@@ -682,11 +661,11 @@ function initScrollAnimations() {
       opacity: 1,
       duration: 1.1,
       ease: 'power3.out',
-      scrollTrigger: {
+      scrollTrigger: safeTrigger({
         trigger: '.secret-entry',
         start: 'top 88%',
         toggleActions: 'play none none reverse',
-      },
+      }),
     }
   )
 
@@ -700,11 +679,11 @@ function initScrollAnimations() {
       duration: 1,
       ease: 'power3.out',
       stagger: 0.15,
-      scrollTrigger: {
+      scrollTrigger: safeTrigger({
         trigger: '.about',
         start: 'top 80%',
         toggleActions: 'play none none reverse',
-      },
+      }),
     }
   )
   gsap.fromTo(
@@ -716,11 +695,11 @@ function initScrollAnimations() {
       duration: 0.9,
       ease: 'power3.out',
       delay: 0.2,
-      scrollTrigger: {
+      scrollTrigger: safeTrigger({
         trigger: '.about-text',
         start: 'top 88%',
         toggleActions: 'play none none reverse',
-      },
+      }),
     }
   )
 
@@ -729,12 +708,12 @@ function initScrollAnimations() {
     yPercent: -18,
     opacity: 0.15,
     ease: 'none',
-    scrollTrigger: {
+    scrollTrigger: safeTrigger({
       trigger: '.hero',
       start: 'top top',
       end: 'bottom top',
       scrub: true,
-    },
+    }),
   })
 
   // 7) 各 section 之间的「颜色接力」：滚入下一屏时弱化上一屏
