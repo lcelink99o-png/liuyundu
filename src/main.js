@@ -20,6 +20,8 @@ const soundtrack = createSoundtrack({ url: TRACK.url, start: TRACK.start, length
 
 const canvas = document.querySelector('#app')
 // 动画作用根元素：merged.html 用 .intro 容器，index.html 直接作用在 body 上
+// isMerged 判断是否是合并页（有 .intro 容器），决定进入主页时是「揭示层」还是「跳转」
+const isMerged = !!document.querySelector('.intro')
 const intro = document.querySelector('.intro') || document.body
 const renderer = new THREE.WebGPURenderer({ canvas, antialias: false, trackTimestamp: query.has('perf') })
 await renderer.init()
@@ -245,7 +247,7 @@ document.querySelector('[data-enter]').addEventListener('click', () => {
   // 停止音频，避免背景音乐在主页继续循环
   if (audioDriven) soundtrack.pause()
   paused = true
-  if (intro) {
+  if (isMerged) {
     // 合并页：帷幕拉开后揭示下方主页
     intro.classList.add('entering')
     setTimeout(() => {
