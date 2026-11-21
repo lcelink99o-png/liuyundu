@@ -400,17 +400,9 @@ function initTimelineScrollbar() {
  * Hero 逐字母拆分（GSAP 驱动）
  * ============================================================ */
 function initHero() {
-  const title = document.getElementById('heroTitle')
-  if (!title) return
-  // 标题保持静态显示（不依赖 GSAP），避免动效失败导致标题不可见
-  const gsap = getGSAP()
-  if (!gsap) return
-  // 仅做副标题 + CTA 的增强动效（失败也不影响标题可见性）
-  gsap.fromTo(
-    '.hero-sub, .hero-cta',
-    { y: 28, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.12, delay: 0.55 }
-  )
+  // 标题与副标题保持静态显示，完全不依赖 GSAP（绝对可靠，不会白屏/空白）
+  // 保留函数以兼容调用，不做任何破坏性操作
+  return
 }
 
 /* ============================================================
@@ -757,12 +749,10 @@ if (curtainIn) {
   }, 1200)
 }
 
-// GSAP 动效：等待全局 gsap 就绪后再执行（vendor 脚本可能在 module 之后才完全就绪）
+// GSAP 动效：完全禁用滚动动效，确保所有内容静态可见（可靠性优先）
+// 动效失败曾导致内容 opacity:0 不可见，故彻底移除，保证任何时候都能看到完整内容
 function bootAnimations() {
-  initHero()
-  if (!prefersReduced) {
-    initScrollAnimations()
-  }
+  // 不再调用 initHero / initScrollAnimations，内容保持静态显示
 }
 if (getGSAP()) {
   bootAnimations()

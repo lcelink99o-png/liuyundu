@@ -87,10 +87,9 @@ img { display: block; max-width: 100%; }
 }
 .hero-title .ch {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(0.4em) rotate(3deg);
+  opacity: 1;
+  transform: none;
 }
-/* 动画由 GSAP 驱动（initHero 内 gsap.fromTo），此处 .ch 初始 opacity:0 用于防闪烁 */
 .hero-foot {
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(0,1fr);
