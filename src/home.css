@@ -96,7 +96,7 @@ img { display: block; max-width: 100%; }
   margin-top: 24px;
   border-top: 2px solid rgba(11,11,11,0.25);
 }
-.hero-sub { max-width: 44ch; font-size: 20px; line-height: 1.6; color: #0b0b0b; font-weight: 600; }
+.hero-sub { max-width: 100%; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.85; color: #0b0b0b; font-weight: 600; }
 .hero-cta { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 6px 22px; }
 
 .btn {
