@@ -233,7 +233,7 @@ const CAST = [
   {
     id: 'liechuan',
     name: '猎川',
-    race: '海豚精',
+    race: '海豚精 · 二副',
     img: 'images/cast-liechuan.jpg',
     brief: '蛟风的同行者。冷脸萌的海豚精，情绪波动不大，却心思细腻，能听出蛟风语调间的细微变化。',
     full: [
