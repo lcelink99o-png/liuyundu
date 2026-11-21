@@ -517,13 +517,50 @@ function renderNovel(key) {
   const paras = novels[key] || []
   const title = NOVELS.find((n) => n.key === key)?.title || key
   readerTitle.textContent = title
-  // 过滤空段落，标题行特殊处理
-  const clean = paras.map((p) => p.trim()).filter(Boolean)
+
+  // 1) 过滤空段落，并删除正文里的作者标注行（- 文/… - 、（文/…）、(文/…)、● 文/… - 等）
+  const clean = paras
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .filter((p) => {
+      // 删除任何形式的作者标注行：去掉装饰字符后若仅剩「文/雪山与百合花」即视为标注
+      const t = p.replace(/[\s\-—·●()（）《》]/g, '')
+      if (/^文\/雪山与百合花$/.test(t)) return false
+      return true
+    })
+
+  // 2) 排除「江水与鲤鱼」「爱你」两篇，其余在正文顶部居中插入作者行
+  const EXCLUDE_AUTHOR = new Set(['江水与鲤鱼', '爱你'])
+  const showAuthor = !EXCLUDE_AUTHOR.has(key)
+
+  // 3) 标题判断收窄：仅第一段若为短标题（含书名号或等于 title）才作为大标题，
+  //    其余段落统一为正文大小，保证字体一致
+  const firstIsHeading =
+    clean.length > 0 &&
+    (clean[0] === title || /^《.+》$/.test(clean[0]) || (clean[0].length <= 15 && clean[0] === clean[0].replace(/[，。！？；：,.!?;:]/g, '')))
+
   readerBody.innerHTML = clean.map((p, i) => {
-    // 判断是否为标题行（第一段或包含书名号的短行）
-    const isHeading = i === 0 || /^《.+》$/.test(p) || p === title
-    return `<p class="${isHeading ? 'reader-heading' : ''}">${p}</p>`
+    if (i === 0 && firstIsHeading) {
+      return `<p class="reader-heading">${p}</p>`
+    }
+    return `<p>${p}</p>`
   }).join('')
+
+  // 在正文顶部（标题之后）插入居中的作者行
+  if (showAuthor) {
+    const authorLine = document.createElement('p')
+    authorLine.className = 'reader-author'
+    authorLine.textContent = '作者：雪山与百合花'
+    const heading = readerBody.querySelector('.reader-heading')
+    if (heading && heading.nextSibling) {
+      readerBody.insertBefore(authorLine, heading.nextSibling)
+    } else if (readerBody.firstChild) {
+      readerBody.insertBefore(authorLine, readerBody.firstChild)
+    } else {
+      readerBody.appendChild(authorLine)
+    }
+  }
+
   buildNav()
 }
 
