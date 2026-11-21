@@ -4,6 +4,10 @@
  * ============================================================ */
 import novels from '../novels.json'
 
+// 动态读取全局 GSAP（由 home.html 的 vendor 脚本提供），缺失时降级为空操作，避免白屏
+function getGSAP() { return window.gsap || null }
+function getScrollTrigger() { return window.ScrollTrigger || null }
+
 // 世界观六大板块（去掉人口，图片 → 板块映射）
 const WORLD_SECTIONS = [
   {
@@ -398,6 +402,8 @@ function initTimelineScrollbar() {
 function initHero() {
   const title = document.getElementById('heroTitle')
   if (!title) return
+  const gsap = getGSAP()
+  if (!gsap) return  // GSAP 未加载时跳过动效，保持静态显示
   const text = title.textContent.trim()
   title.textContent = ''
   title.setAttribute('aria-label', text)
@@ -596,6 +602,9 @@ document.addEventListener('keydown', (e) => {
  * 统一运动语言：由下而上 + power3/4 缓出，对应「溯江而上」意象
  * ============================================================ */
 function initScrollAnimations() {
+  const gsap = getGSAP()
+  const ScrollTrigger = getScrollTrigger()
+  if (!gsap || !ScrollTrigger) return
   gsap.registerPlugin(ScrollTrigger)
 
   // 1) 各板块标题区（coll-label / coll-sub）：下屏标题接力浮入
@@ -755,12 +764,38 @@ if (burger && nav) {
   })
 }
 
-// 初始化
+// 初始化：先渲染静态内容（不依赖 GSAP，保证不白屏），再启动动效
 renderWorld()
 renderCast()
 renderTimeline()
-initHero()
 initTimelineScrollbar()
-if (!prefersReduced) {
-  initScrollAnimations()
+
+// 帷幕入场遮罩兜底：无论 CSS 动画是否播放，1.2 秒后强制隐藏幕布，避免白屏
+const curtainIn = document.querySelector('.curtain-in')
+if (curtainIn) {
+  setTimeout(() => {
+    curtainIn.style.display = 'none'
+  }, 1200)
+}
+
+// GSAP 动效：等待全局 gsap 就绪后再执行（vendor 脚本可能在 module 之后才完全就绪）
+function bootAnimations() {
+  initHero()
+  if (!prefersReduced) {
+    initScrollAnimations()
+  }
+}
+if (getGSAP()) {
+  bootAnimations()
+} else {
+  let waited = 0
+  const timer = setInterval(() => {
+    waited += 100
+    if (getGSAP()) {
+      clearInterval(timer)
+      bootAnimations()
+    } else if (waited >= 3000) {
+      clearInterval(timer)
+    }
+  }, 100)
 }
