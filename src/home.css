@@ -9,7 +9,7 @@
   --ink: #f4f4f2;          /* 主文字 */
   --mute: #6f6f74;         /* 弱化文字 */
   --line: #232323;         /* 分隔线 */
-  --sans: 'Archivo', 'PingFang SC', 'Microsoft YaHei', 'SimHei', system-ui, sans-serif;
+  --sans: 'PingFang SC', 'Microsoft YaHei', 'SimHei', 'Archivo', system-ui, sans-serif;
   --gut: clamp(16px, 2.4vw, 36px);
 }
 
@@ -37,8 +37,7 @@ img { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--line);
 }
 .brand {
-  font-weight: 800;
-  font-stretch: 75%;
+  font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.02em;
   font-kerning: none;
@@ -76,10 +75,9 @@ img { display: block; max-width: 100%; }
 /* 标题：超大黑字，逐字拆分 */
 .hero-title {
   margin: 0 0 16px;
-  font-weight: 900;
-  font-stretch: 75%;
+  font-weight: 700;
   font-size: clamp(40px, 5.2vw, 72px);
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -0.02em;
   font-kerning: none;
   text-rendering: optimizeSpeed;
@@ -128,7 +126,7 @@ img { display: block; max-width: 100%; }
 }
 .coll-label {
   margin: 0;
-  font-weight: 900; font-stretch: 75%;
+  font-weight: 700;
   font-size: clamp(48px, 6vw, 96px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -176,7 +174,7 @@ img { display: block; max-width: 100%; }
   font-variant-numeric: tabular-nums;
 }
 .entry-name {
-  font-weight: 600; font-stretch: 82%;
+  font-weight: 600;
   font-size: clamp(26px, 3.6vw, 46px);
   line-height: 1.04; letter-spacing: -0.02em;
   color: var(--ink);
@@ -224,8 +222,7 @@ img { display: block; max-width: 100%; }
 }
 .tl-idx {
   display: block;
-  font-weight: 800;
-  font-stretch: 75%;
+  font-weight: 700;
   font-size: 48px;
   line-height: 1;
   color: rgba(91,255,60,0.35);
@@ -298,7 +295,7 @@ img { display: block; max-width: 100%; }
   color: var(--green);
 }
 .secret-title {
-  font-weight: 900; font-stretch: 75%;
+  font-weight: 700;
   font-size: clamp(40px, 6vw, 96px);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -330,7 +327,7 @@ img { display: block; max-width: 100%; }
 }
 .about-title {
   margin-top: 18px;
-  font-weight: 900; font-stretch: 75%;
+  font-weight: 700;
   font-size: clamp(56px, 9vw, 150px);
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -415,7 +412,7 @@ img { display: block; max-width: 100%; }
 }
 .detail-title {
   margin-top: 14px;
-  font-weight: 900; font-stretch: 75%;
+  font-weight: 700;
   font-size: clamp(48px, 7vw, 120px);
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -472,7 +469,7 @@ img { display: block; max-width: 100%; }
 .reader-close:hover { background: var(--green); color: #0b0b0b; }
 .reader-head { padding: 28px 32px 8px; }
 .reader-kicker { font-weight: 600; font-size: 12px; letter-spacing: 0.14em; color: var(--green); }
-.reader-title { margin-top: 12px; font-weight: 900; font-stretch: 75%; font-size: 40px; line-height: 1.05; color: var(--ink); }
+.reader-title { margin-top: 12px; font-weight: 700; font-size: 40px; line-height: 1.05; color: var(--ink); }
 .reader-nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 18px 32px 0; }
 .reader-nav button {
   padding: 8px 18px; border-radius: 99px;
@@ -518,7 +515,7 @@ img { display: block; max-width: 100%; }
 }
 .editor.is-open .editor-panel { transform: translateY(0) scale(1); }
 .editor-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-.editor-head h3 { font-weight: 800; font-stretch: 75%; font-size: 20px; color: var(--ink); }
+.editor-head h3 { font-weight: 700; font-size: 20px; color: var(--ink); }
 .editor-close {
   width: 34px; height: 34px; border-radius: 50%;
   background: none; border: 1px solid var(--line);
