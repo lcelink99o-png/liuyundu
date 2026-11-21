@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>流云渡 · 云游此地</title>
+  <meta name="description" content="流云渡 OC 世界观 —— 开场动画 + 主页一体化：鲤鱼、桃花、山茶的酸色涂抹，绽开后进入人类与妖怪共存的东方玄幻都市云城" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,100..900;1,75..125,100..900&display=swap" rel="stylesheet" />
+  <!-- 主页样式（含 :root 变量、hero、时间线、阅读器等） -->
+  <link rel="stylesheet" href="/src/home.css" />
+  <!-- 开场动画层样式（作用域化，与主页变量隔离） -->
+  <link rel="stylesheet" href="/src/intro.css" />
+  <style>
+    /* 有开场动画层覆盖时锁定主页滚动；进入后恢复 */
+    body:has(.intro:not(.is-entered)) { overflow: hidden; }
+  </style>
+</head>
+<body>
+  <!-- ============ 开场动画层（全屏覆盖，绽开后揭示主页） ============ -->
+  <div class="intro is-loading">
+    <canvas id="app"></canvas>
+
+    <div class="hud" aria-hidden="true">
+      <div class="band band--top">
+        <span class="label dim">流云渡 / 世界观</span>
+        <span class="timecode band__end" data-timecode>00.00 / 15.00</span>
+        <span class="track small dim band__end band__row-2" data-track></span>
+      </div>
+      <div class="band band--bottom" data-caption>
+        <span class="mask label dim"><span data-line>&nbsp;</span></span>
+        <span class="mask caption__title band__row-2"><span data-line>&nbsp;</span></span>
+        <span class="mask dim band__row-3"><span data-line>&nbsp;</span></span>
+      </div>
+      <div class="split" data-split></div>
+    </div>
+
+    <button class="start" type="button" data-start>
+      <span class="start__play" aria-hidden="true"></span>
+      <span class="start__label">云游此地</span>
+      <span class="start__hint"></span>
+    </button>
+
+    <button class="enter" type="button" data-enter>
+      <span class="enter__label">进入流云渡</span>
+      <span class="enter__arrow" aria-hidden="true">→</span>
+    </button>
+
+    <!-- 帷幕拉开过渡遮罩：从中心向两侧拉开，露出主页 -->
+    <div class="curtain" aria-hidden="true">
+      <div class="curtain__panel curtain__panel--left"></div>
+      <div class="curtain__panel curtain__panel--right"></div>
+      <div class="curtain__seam"></div>
+    </div>
+  </div>
+
+  <!-- ============ 主页主体 ============ -->
+  <!-- Masthead -->
+  <header class="mast">
+    <a class="brand" href="#top">流云渡<span class="brand-dot">.</span></a>
+    <nav class="nav">
+      <a href="#world" class="nav-item">世界观</a>
+      <a href="#cast" class="nav-item">人物志</a>
+      <a href="#timeline" class="nav-item">时间线</a>
+      <a href="#secret" class="nav-item">秘闻</a>
+      <a href="#about" class="nav-item">关于</a>
+    </nav>
+    <button class="burger" type="button" aria-label="菜单"><span></span><span></span></button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <h1 class="hero-title" id="heroTitle">流云渡</h1>
+      <div class="hero-foot">
+        <p class="hero-sub">人类与妖怪共存的东方玄幻都市 —— 溯流云江而下，游进一个温柔宇宙</p>
+        <div class="hero-cta">
+          <a class="btn btn--solid" href="#world">开始云游</a>
+          <a class="btn btn--ghost" href="#cast">人物志</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 世界观 Collection -->
+  <section class="coll" id="world">
+    <div class="coll-head">
+      <h2 class="coll-label">世界观</h2>
+      <p class="coll-sub">八千年岁月，吹不尽雷声烈火，诗词歌赋</p>
+    </div>
+    <div class="coll-grid" id="worldGrid"></div>
+  </section>
+
+  <!-- 人物志 Collection -->
+  <section class="coll" id="cast">
+    <div class="coll-head">
+      <h2 class="coll-label">人物志</h2>
+      <p class="coll-sub">九位核心人物，每一位都是流云渡的一段涟漪</p>
+    </div>
+    <div class="coll-grid" id="castGrid"></div>
+  </section>
+
+  <!-- 时间线 -->
+  <section class="coll" id="timeline">
+    <div class="coll-head">
+      <h2 class="coll-label">时间线</h2>
+      <p class="coll-sub">主线大事件</p>
+    </div>
+    <div class="timeline" id="timelineList"></div>
+    <div class="tl-scrollbar" id="tlScrollbar">
+      <div class="tl-scrollbar-track"><div class="tl-scrollbar-thumb" id="tlThumb"></div></div>
+    </div>
+  </section>
+
+  <!-- 秘闻 -->
+  <section class="coll" id="secret">
+    <div class="coll-head">
+      <h2 class="coll-label">秘闻</h2>
+      <p class="coll-sub">散落于江湖的佚事，点开一阅</p>
+    </div>
+    <button class="secret-entry" id="secretBtn" type="button">
+      <span class="secret-bg"><img src="/images/secret.jpg" alt="秘闻" loading="lazy" /></span>
+      <span class="secret-shade"></span>
+      <span class="secret-inner">
+        <span class="secret-kicker">百万字数 · 正篇连载</span>
+        <span class="secret-title">江水与鲤鱼</span>
+        <span class="secret-arrow">阅读 →</span>
+      </span>
+    </button>
+  </section>
+
+  <!-- 关于：绿底黑字，与首页一致 -->
+  <section class="about" id="about">
+    <span class="about-label">关于</span>
+    <h2 class="about-title">游云风月闲</h2>
+    <p class="about-text">一壶清酒，一桥流渡。<br />大江声声你我意。<br />繁花飞步摇，且试晴风晓。</p>
+    <p class="about-meta">© 流云渡 · 原创世界观 · 请勿商用</p>
+  </section>
+
+  <!-- 返回顶部 -->
+  <a class="backtop" href="#top" aria-label="回到顶部">↑</a>
+
+  <!-- 全屏详情页：板块/人物 -->
+  <div class="detail" id="modal" aria-hidden="true">
+    <button class="detail-back" data-close aria-label="返回">← 返回</button>
+    <div class="detail-hero">
+      <img class="detail-img" id="modalImg" src="" alt="" />
+      <div class="detail-hero-shade"></div>
+      <div class="detail-head">
+        <span class="detail-tag" id="modalTag"></span>
+        <h2 class="detail-title" id="modalTitle"></h2>
+      </div>
+    </div>
+    <div class="detail-body" id="modalBody"></div>
+    <div class="detail-foot">
+      <button class="btn btn--ghost btn--edit" id="editBtn" type="button">✎ 编辑这段文字</button>
+    </div>
+  </div>
+
+  <!-- 弹窗：秘闻小说阅读器 -->
+  <div class="reader" id="reader" aria-hidden="true">
+    <div class="reader-backdrop" data-reader-close></div>
+    <div class="reader-panel" role="dialog" aria-modal="true">
+      <button class="reader-close" data-reader-close aria-label="关闭">✕</button>
+      <div class="reader-head">
+        <span class="reader-kicker">秘闻 · 正篇连载</span>
+        <h3 class="reader-title" id="readerTitle">江水与鲤鱼</h3>
+      </div>
+      <div class="reader-body" id="readerBody"></div>
+    </div>
+  </div>
+
+  <!-- 文字编辑器弹窗（所见即所得 contenteditable） -->
+  <div class="editor" id="editor" aria-hidden="true">
+    <div class="editor-backdrop" data-editor-close></div>
+    <div class="editor-panel" role="dialog" aria-modal="true">
+      <div class="editor-head">
+        <h3>调整文字</h3>
+        <button class="editor-close" data-editor-close aria-label="关闭">✕</button>
+      </div>
+      <div class="editor-field">
+        <label>标题</label>
+        <input type="text" id="editorTitle" />
+      </div>
+      <div class="editor-field">
+        <label>正文（直接点进去改，所见即所得）</label>
+        <div class="editor-richtext" id="editorBody" contenteditable="true"></div>
+      </div>
+      <div class="editor-foot">
+        <button class="btn btn--ghost" data-editor-close type="button">取消</button>
+        <button class="btn btn--solid" id="editorSave" type="button">保存修改</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/gsap.min.js"></script>
+  <script src="/vendor/ScrollTrigger.min.js"></script>
+  <script type="module" src="/src/home.js"></script>
+  <script type="module" src="/src/entry.js"></script>
+</body>
+</html>

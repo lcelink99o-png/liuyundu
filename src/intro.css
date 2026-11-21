@@ -1,0 +1,240 @@
+/* ============================================================
+ * 流云渡开场动画层样式（作用域化，避免与主页 home.css 冲突）
+ * 所有选择器限定在 .intro 内；变量局部声明，不污染 :root
+ * ============================================================ */
+
+.intro {
+  --intro-ink: #080a0a;
+  --intro-paper: #f4f5ef;
+  --intro-acid: #d6fe51;
+  --intro-acid-pink: #ff5ca8;
+  --intro-acid-green: #b8ff4d;
+  --u: min(1vh, 0.5625vw);
+  --m: max(20px, calc(5 * var(--u)));
+  --gap: max(4px, calc(0.8 * var(--u)));
+  --hairline: max(1px, calc(0.1 * var(--u)));
+  --micro: max(10px, calc(1.2 * var(--u)));
+  --body: max(11px, calc(1.6 * var(--u)));
+  --data: max(14px, calc(2.13 * var(--u)));
+  --display-s: max(20px, calc(2.84 * var(--u)));
+  --display-l: max(28px, calc(5.05 * var(--u)));
+  --face-display: 'PingFang SC', 'Microsoft YaHei', 'SimHei', sans-serif;
+  --face-mono: 'SF Mono', 'Consolas', 'Menlo', monospace;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  background: var(--intro-paper);
+  color: var(--intro-ink);
+  font: 400 var(--body) / 1.4 var(--face-mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 进入主页后：整体淡出并隐藏 */
+.intro.is-entered {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+
+.intro #app {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.25s;
+}
+.intro.is-loading #app,
+.intro.is-loading .hud,
+.intro.is-loading .start { opacity: 0; pointer-events: none; }
+
+/* ---- HUD ---- */
+.intro .hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--intro-ink);
+  font: 400 var(--body) / 1.4 var(--face-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  -webkit-font-smoothing: antialiased;
+  transition: opacity 0.25s;
+}
+.intro .dim { opacity: 0.64; }
+.intro .label { font-size: var(--micro); line-height: 1.2; letter-spacing: 0.08em; }
+.intro .small { font-size: var(--micro); line-height: 1.2; }
+
+.intro .band {
+  position: absolute; left: var(--m); right: var(--m);
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: baseline; gap: var(--gap);
+}
+.intro .band--top { top: var(--m); }
+.intro .band--bottom { bottom: var(--m); }
+.intro .band > * { grid-area: 1 / 1; }
+.intro .band > .band__end { grid-column: 3; justify-self: end; text-align: right; }
+.intro .band > .band__row-2 { grid-row: 2; }
+.intro .band > .band__row-3 { grid-row: 3; }
+
+.intro .timecode {
+  font-size: var(--display-s); font-weight: 700; line-height: 1.2;
+  font-variant-numeric: tabular-nums lining-nums; letter-spacing: 0.02em;
+}
+.intro .track { max-width: 42vw; font-size: var(--micro); opacity: 0.64; }
+.intro .track:empty { display: none; }
+.intro .mask { display: block; overflow: clip; }
+.intro .mask > span { display: inline-block; transform: translate3d(0, 130%, 0); will-change: transform; }
+.intro .caption__title {
+  padding-bottom: 0.08em;
+  font: 900 var(--display-l) / 0.96 var(--face-display);
+  letter-spacing: 0.01em;
+}
+
+.intro .split {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: var(--hairline); background: currentColor;
+  opacity: 0; will-change: transform;
+}
+
+/* ---- 开始按钮 ---- */
+.intro .start {
+  position: absolute; left: 50%; bottom: max(6vh, var(--m));
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+  gap: max(6px, calc(0.6 * var(--u)));
+  border: none; background: none; color: var(--intro-ink);
+  cursor: pointer;
+  font: 400 var(--body) / 1.2 var(--face-mono);
+  letter-spacing: 0.08em;
+  -webkit-font-smoothing: antialiased;
+  transition: opacity 0.25s;
+}
+.intro .start__play {
+  display: flex; align-items: center; justify-content: center;
+  width: max(44px, calc(5 * var(--u)));
+  height: max(44px, calc(5 * var(--u)));
+  border: var(--hairline) solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+.intro .start__play::before {
+  content: '';
+  width: 0; height: 0;
+  border-left: calc(0.9 * var(--u)) solid currentColor;
+  border-top: calc(0.55 * var(--u)) solid transparent;
+  border-bottom: calc(0.55 * var(--u)) solid transparent;
+  margin-left: calc(0.2 * var(--u));
+}
+.intro .start__label {
+  font: 900 var(--display-s) / 1 var(--face-display);
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 var(--intro-acid-green);
+}
+.intro .start__hint { opacity: 0.64; font-size: var(--micro); }
+.intro .start:hover .start__play { background: var(--intro-acid-pink); color: #fff; border-color: var(--intro-acid-pink); }
+.intro .start:focus-visible { outline: 3px solid var(--intro-acid-pink); outline-offset: 6px; }
+
+/* ---- 进入主页按钮 ---- */
+.intro .enter {
+  position: absolute; right: var(--m); bottom: max(6vh, var(--m));
+  display: flex; align-items: center;
+  gap: max(10px, calc(1.2 * var(--u)));
+  padding: max(16px, calc(2.6 * var(--u))) max(30px, calc(4.4 * var(--u)));
+  border: max(2px, calc(0.2 * var(--u))) solid var(--intro-ink);
+  background: transparent; color: var(--intro-ink);
+  cursor: pointer;
+  font: 800 var(--display-s) / 1 var(--face-display);
+  letter-spacing: 0.06em;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+.intro.is-playing .enter { opacity: 1; pointer-events: auto; }
+.intro .enter:hover { background: var(--intro-ink); color: var(--intro-acid); border-color: var(--intro-ink); }
+.intro .enter__arrow { font: 400 var(--display-s) / 1 var(--face-mono); }
+
+/* ---- 进入主页状态：绽开过渡 ---- */
+.intro.entering #app,
+.intro.entering .hud,
+.intro.entering .start,
+.intro.entering .enter {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+/* ---- 帷幕拉开过渡遮罩 ---- */
+.intro .curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+}
+.intro.entering .curtain { opacity: 1; }
+
+/* 左右两半幕布：深黑，内边缘带酸性绿发光线 */
+.intro .curtain__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background: #0b0b0b;
+  will-change: transform;
+}
+.intro .curtain__panel--left {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: inset -2px 0 0 0 #5bff3c;
+}
+.intro .curtain__panel--right {
+  right: 0;
+  transform: translateX(0);
+  box-shadow: inset 2px 0 0 0 #5bff3c;
+}
+.intro.entering .curtain__panel--left {
+  animation: intro-curtain-left 1.15s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.intro.entering .curtain__panel--right {
+  animation: intro-curtain-right 1.15s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+@keyframes intro-curtain-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-101%); }
+}
+@keyframes intro-curtain-right {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(101%); }
+}
+
+/* 中线缝光：拉开瞬间一道绿光从缝中闪出 */
+.intro .curtain__seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: #5bff3c;
+  box-shadow: 0 0 24px 6px rgba(91, 255, 60, 0.85);
+  transform: scaleY(0);
+  transform-origin: center;
+}
+.intro.entering .curtain__seam {
+  animation: intro-curtain-seam 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes intro-curtain-seam {
+  0% { transform: scaleY(0); opacity: 1; }
+  35% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* 开场动画失败（无 WebGPU）时：隐藏动画层，直接显示主页 */
+.intro.is-failed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro * { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>流云渡 · 云游此地</title>
+    <meta name="description" content="流云渡 OC 世界观开场动画 —— 鲤鱼、桃花、山茶的酸色涂抹与运动模糊，15 秒实时渲染循环。" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="is-loading">
+    <canvas id="app"></canvas>
+
+    <div class="hud" aria-hidden="true">
+      <div class="band band--top">
+        <span class="label dim">流云渡 / 世界观</span>
+        <span class="timecode band__end" data-timecode>00.00 / 15.00</span>
+        <span class="track small dim band__end band__row-2" data-track></span>
+      </div>
+      <div class="band band--bottom" data-caption>
+        <span class="mask label dim"><span data-line>&nbsp;</span></span>
+        <span class="mask caption__title band__row-2"><span data-line>&nbsp;</span></span>
+        <span class="mask dim band__row-3"><span data-line>&nbsp;</span></span>
+      </div>
+
+      <div class="split" data-split></div>
+    </div>
+
+    <button class="start" type="button" data-start>
+      <span class="start__play" aria-hidden="true"></span>
+      <span class="start__label">云游此地</span>
+    </button>
+
+    <button class="enter" type="button" data-enter>
+      <span class="enter__label">进入流云渡</span>
+      <span class="enter__arrow" aria-hidden="true">→</span>
+    </button>
+
+    <!-- 帷幕拉开过渡遮罩：从中心向两侧拉开，露出主页 -->
+    <div class="curtain" aria-hidden="true">
+      <div class="curtain__panel curtain__panel--left"></div>
+      <div class="curtain__panel curtain__panel--right"></div>
+      <div class="curtain__seam"></div>
+    </div>
+
+    <script type="module" src="/src/entry.js"></script>
+  </body>
+</html>
