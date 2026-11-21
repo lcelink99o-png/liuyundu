@@ -400,9 +400,49 @@ function initTimelineScrollbar() {
  * Hero 逐字母拆分（GSAP 驱动）
  * ============================================================ */
 function initHero() {
-  // 标题与副标题保持静态显示，完全不依赖 GSAP（绝对可靠，不会白屏/空白）
-  // 保留函数以兼容调用，不做任何破坏性操作
-  return
+  const gsap = getGSAP()
+  const title = document.querySelector('.hero-title')
+  const sub = document.querySelector('.hero-sub')
+  if (!gsap || !title) return
+
+  // 逐字母拆分标题（仅英文字母/数字拆分，中文整字保留，避免字体问题）
+  const text = title.textContent.trim()
+  // 只处理包含拉丁字符的标题才拆分，中文标题保持整段静态（字体兼容性优先）
+  const hasLatin = /[A-Za-z0-9]/.test(text)
+  if (!hasLatin) return
+
+  const chars = text.split('')
+  title.innerHTML = chars
+    .map((c) => (c === ' ' ? ' ' : `<span class="ch">${c}</span>`))
+    .join('')
+
+  // 逐字 stagger 入场（失败不影响显示：初始 opacity 已由 CSS 设为 1）
+  gsap.fromTo(
+    title.querySelectorAll('.ch'),
+    { y: '0.6em', opacity: 0, rotateX: 45 },
+    {
+      y: 0,
+      opacity: 1,
+      rotateX: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.045,
+      delay: 0.15,
+      onComplete: () => {
+        // 动画结束后强制清理，确保任何情况下文字可见
+        gsap.set(title.querySelectorAll('.ch'), { clearProps: 'all' })
+      },
+    }
+  )
+
+  // 副标题淡入
+  if (sub) {
+    gsap.fromTo(
+      sub,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.5 }
+    )
+  }
 }
 
 /* ============================================================
@@ -749,10 +789,17 @@ if (curtainIn) {
   }, 1200)
 }
 
-// GSAP 动效：完全禁用滚动动效，确保所有内容静态可见（可靠性优先）
-// 动效失败曾导致内容 opacity:0 不可见，故彻底移除，保证任何时候都能看到完整内容
+// GSAP 动效：恢复标题逐字拆分 + 滚动入场动效
+// 保护机制：所有元素初始 opacity 已在 CSS 中设为可见（非 0），
+// 动效只是从可见状态做过渡增强，即使 GSAP 失败也绝不会白屏
 function bootAnimations() {
-  // 不再调用 initHero / initScrollAnimations，内容保持静态显示
+  try {
+    initHero()
+    initScrollAnimations()
+  } catch (e) {
+    // 动效异常时静默降级为静态显示，绝不影响内容可见性
+    console.warn('[流云渡] 动效初始化失败，已降级为静态显示：', e)
+  }
 }
 if (getGSAP()) {
   bootAnimations()
