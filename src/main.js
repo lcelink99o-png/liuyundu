@@ -251,9 +251,10 @@ document.querySelector('[data-enter]').addEventListener('click', () => {
     }, 1150)
   } else {
     // 独立页（index.html）：帷幕拉开后跳转 home.html
+    // 用相对路径，兼容 GitHub Pages 子路径部署
     document.body.classList.add('entering')
     setTimeout(() => {
-      window.location.href = '/home.html'
+      window.location.href = 'home.html'
     }, 1150)
   }
 })
