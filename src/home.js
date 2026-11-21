@@ -518,7 +518,7 @@ function renderNovel(key) {
   const title = NOVELS.find((n) => n.key === key)?.title || key
   readerTitle.textContent = title
 
-  // 1) 过滤空段落，并删除正文里的作者标注行（- 文/… - 、（文/…）、(文/…)、● 文/… - 等）
+  // 1) 清洗段落：去空、删除正文里的作者标注行（- 文/… - 、（文/…）、(文/…)、● 文/… - 等）
   const clean = paras
     .map((p) => p.trim())
     .filter(Boolean)
@@ -529,38 +529,31 @@ function renderNovel(key) {
       return true
     })
 
-  // 2) 排除「江水与鲤鱼」「爱你」两篇，其余在正文顶部居中插入作者行
+  // 2) 跳过正文里与标题重复的标题段（书名号形式或直接等于 title 的段落），
+  //    避免与顶部固定标题重复显示
+  const bodyParas = clean.filter((p) => {
+    const isTitleDup =
+      p === title ||
+      p.replace(/[《》]/g, '') === title.replace(/[《》]/g, '') ||
+      p === `《${title}》`
+    return !isTitleDup
+  })
+
+  // 3) 固定排版：标题（居中大字）→ 作者行（居中灰字）→ 正文（统一字号）
   const EXCLUDE_AUTHOR = new Set(['江水与鲤鱼', '爱你'])
   const showAuthor = !EXCLUDE_AUTHOR.has(key)
 
-  // 3) 标题判断收窄：仅第一段若为短标题（含书名号或等于 title）才作为大标题，
-  //    其余段落统一为正文大小，保证字体一致
-  const firstIsHeading =
-    clean.length > 0 &&
-    (clean[0] === title || /^《.+》$/.test(clean[0]) || (clean[0].length <= 15 && clean[0] === clean[0].replace(/[，。！？；：,.!?;:]/g, '')))
-
-  readerBody.innerHTML = clean.map((p, i) => {
-    if (i === 0 && firstIsHeading) {
-      return `<p class="reader-heading">${p}</p>`
-    }
-    return `<p>${p}</p>`
-  }).join('')
-
-  // 在正文顶部（标题之后）插入居中的作者行
+  const parts = []
+  // 标题始终用 title 字段居中显示
+  parts.push(`<p class="reader-heading">${title}</p>`)
+  // 作者行
   if (showAuthor) {
-    const authorLine = document.createElement('p')
-    authorLine.className = 'reader-author'
-    authorLine.textContent = '作者：雪山与百合花'
-    const heading = readerBody.querySelector('.reader-heading')
-    if (heading && heading.nextSibling) {
-      readerBody.insertBefore(authorLine, heading.nextSibling)
-    } else if (readerBody.firstChild) {
-      readerBody.insertBefore(authorLine, readerBody.firstChild)
-    } else {
-      readerBody.appendChild(authorLine)
-    }
+    parts.push(`<p class="reader-author">作者：雪山与百合花</p>`)
   }
+  // 正文（统一字号，首行缩进）
+  parts.push(...bodyParas.map((p) => `<p>${p}</p>`))
 
+  readerBody.innerHTML = parts.join('')
   buildNav()
 }
 

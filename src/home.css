@@ -468,7 +468,8 @@ img { display: block; max-width: 100%; }
 .reader-close:hover { background: var(--green); color: #0b0b0b; }
 .reader-head { padding: 28px 32px 8px; }
 .reader-kicker { font-weight: 600; font-size: 12px; letter-spacing: 0.14em; color: var(--green); }
-.reader-title { margin-top: 12px; font-weight: 700; font-size: 40px; line-height: 1.05; color: var(--ink); }
+/* 顶部 title 隐藏：正文区已用居中的 reader-heading 作为主标题，避免重复 */
+.reader-title { display: none; }
 .reader-nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 18px 32px 0; }
 .reader-nav button {
   padding: 8px 18px; border-radius: 99px;
@@ -488,8 +489,8 @@ img { display: block; max-width: 100%; }
 }
 .reader-body p.reader-heading {
   text-indent: 0; text-align: center;
-  font-weight: 800; font-size: 22px; color: var(--ink);
-  margin: 18px 0 22px;
+  font-weight: 800; font-size: 28px; color: var(--ink);
+  margin: 4px 0 8px;
 }
 .reader-body p.reader-author {
   text-indent: 0; text-align: center;
