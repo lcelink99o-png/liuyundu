@@ -317,6 +317,13 @@ const NOVELS = [
   { key: '皑雪', title: '皑雪', author: '' },
   { key: '明天见', title: '明天见', author: '' },
   { key: 'Girl,so confusing', title: 'Girl, so confusing', author: '' },
+  { key: 'Violeta', title: 'Violeta', author: '' },
+  { key: 'Late night Drive', title: 'Late Night Drive', author: '' },
+  { key: 'Fly High', title: 'Fly High', author: '' },
+  { key: 'Aint-In-LA', title: "Ain't In LA", author: '' },
+  { key: 'BUTTER', title: 'BUTTER', author: '' },
+  { key: 'Steady', title: 'Steady', author: '' },
+  { key: '野马尘埃', title: '野马尘埃', author: '' },
 ]
 
 /* ============================================================
