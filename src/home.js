@@ -324,6 +324,13 @@ const NOVELS = [
   { key: 'BUTTER', title: 'BUTTER', author: '' },
   { key: 'Steady', title: 'Steady', author: '' },
   { key: '野马尘埃', title: '野马尘埃', author: '' },
+  { key: '七夕', title: '七夕', author: '' },
+  { key: '老公', title: '老公', author: '' },
+  { key: '开学', title: '开学', author: '' },
+  { key: 'APPLE', title: 'APPLE', author: '' },
+  { key: 'FlashingLights', title: 'Flashing Lights', author: '' },
+  { key: 'LOVEMONEYFAME', title: 'LOVE MONEY FAME', author: '' },
+  { key: 'Summerforever', title: 'Summer forever', author: '' },
 ]
 
 /* ============================================================
