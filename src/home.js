@@ -124,7 +124,7 @@ const CAST = [
     id: 'feiyun',
     name: '绯云',
     race: '桃花妖 · 研究所所长',
-    img: 'images/cast-feiyun.jpg',
+    img: 'images/cast-feiyun.jpg?v=1122',
     brief: '千岁桃花妖，灼华桃园庄主转型农林科技研究所所长。论迹不论心的精明，高智商高行动力，ENTJ。',
     full: [
       '姓名：绯云　身高：170cm　年龄：一千余岁',
@@ -179,7 +179,7 @@ const CAST = [
     id: 'shaoqing',
     name: '韶情',
     race: '杏花妖 · 设计师',
-    img: 'images/cast-shaoqing.jpg',
+    img: 'images/cast-shaoqing.jpg?v=1122',
     brief: '绯云的知心闺蜜，八百年的杏花妖。开朗前卫，追求时尚，常与蛟风一起逛街挑衣服。',
     full: [
       '姓名：韶情　种族：杏花妖　外貌锚点：杂志风穿搭',
@@ -196,7 +196,7 @@ const CAST = [
     id: 'chunyang',
     name: '春阳',
     race: '桃花妖 · 医生',
-    img: 'images/cast-chunyang.jpg',
+    img: 'images/cast-chunyang.jpg?v=1122',
     brief: '绯云的师母（也是她渴望的母亲）。主业医生、副业庄主，嘴毒心软，最终去往罗马闯荡，将桃园传给绯云。',
     full: [
       '姓名：春阳　种族：桃花妖　现居地：罗马',
