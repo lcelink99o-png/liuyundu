@@ -621,7 +621,7 @@ function renderNovel(key) {
   })
 
   // 3) 固定排版：标题（居中大字）→ 作者行（居中灰字）→ 正文（统一字号）
-  const EXCLUDE_AUTHOR = new Set(['江水与鲤鱼', '爱你'])
+  const EXCLUDE_AUTHOR = new Set(['江水与鲤鱼', '爱你', '意气'])
   const showAuthor = !EXCLUDE_AUTHOR.has(key)
 
   const parts = []
@@ -682,7 +682,7 @@ function closeEditor() {
   editor.setAttribute('aria-hidden', 'true')
 }
 
-editBtn.addEventListener('click', openEditor)
+if (editBtn) editBtn.addEventListener('click', openEditor)
 document.querySelectorAll('[data-editor-close]').forEach((el) => {
   el.addEventListener('click', closeEditor)
 })
